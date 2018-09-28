@@ -1,0 +1,4 @@
+rootProject.name = 'liquiBaseSample'
+include 'medicalTransactionModel'
+include 'transactionsReporting'
+

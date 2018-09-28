@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="1" author="denis">
+        <createTable tableName="goods">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_state" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="goods"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2" author="denis">
+        <createTable tableName="patients">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="varchar(15)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="id_state" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="patients"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="3" author="denis">
+        <createTable tableName="states">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="states"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="denis" id="addProductStateForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="id_state"
+                                 baseTableName="goods"
+                                 constraintName="fk_goods_states"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="states"/>
+    </changeSet>
+
+    <changeSet author="denis" id="addPatientStateForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="id_state"
+                                 baseTableName="patients"
+                                 constraintName="fk_patients_states"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="states"/>
+    </changeSet>
+
+    <changeSet id="4" author="denis">
+        <createTable tableName="transactions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="id_patient" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_product" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="transactions"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="denis" id="addTransactionProductForeignKeyConstraint">
+    <addForeignKeyConstraint baseColumnNames="id_product"
+                             baseTableName="transactions"
+                             constraintName="fk_transactions_goods"
+                             onDelete="CASCADE"
+                             onUpdate="RESTRICT"
+                             referencedColumnNames="id"
+                             referencedTableName="goods"/>
+    </changeSet>
+
+    <changeSet author="denis" id="addTransactionPatientForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="id_patient"
+                                 baseTableName="transactions"
+                                 constraintName="fk_transactions_patients"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="patients"/>
+    </changeSet>
+
+    <changeSet id="5" author="denis">
+        <createTable tableName="audit">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="audit"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

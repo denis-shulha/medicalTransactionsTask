@@ -1,0 +1,11 @@
+/medicalTransactionModel/build
+/medicalTransactionModel/out
+/transactionsReporting/build
+/transactionsReporting/out
+/build
+/out
+/reports
+/.idea
+/.gradle
+.gitattributes
+liquidBaseSample.iml
