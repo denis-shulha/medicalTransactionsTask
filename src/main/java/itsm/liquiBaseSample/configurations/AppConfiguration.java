@@ -64,13 +64,13 @@ public class AppConfiguration {
         return new DataSourceTransactionManager(dataSource);
     }
 
-    @Bean
-    @DependsOn("liquibase")
+   /* @Bean
     public  AuditService auditService(AuditRecordRowMapper mapper) {
         return new AuditServiceImpl(jdbcTemplate(), mapper);
     }
-
+*/
     @Bean
+    @Lazy
     public GlobalAuditor globalAuditor(AuditService auditService) {
         boolean enabled = Boolean.parseBoolean(env.getProperty("options.auditable"));
         return new GlobalAuditor(auditService, enabled);
