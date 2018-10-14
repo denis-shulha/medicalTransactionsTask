@@ -1,6 +1,6 @@
 package itsm.liquiBaseSample.domains;
 
-public class Product {
+public class Product implements IEntity {
     private Integer id;
     private String name;
     private State state;
@@ -36,5 +36,14 @@ public class Product {
 
     public Product() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", state=" + state +
+                '}';
     }
 }

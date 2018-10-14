@@ -1,6 +1,8 @@
 package itsm.liquiBaseSample.services.state;
 
 import itsm.liquiBaseSample.annotations.Audit;
+import itsm.liquiBaseSample.annotations.Cached;
+import itsm.liquiBaseSample.cache.state.StateCacheImpl;
 import itsm.liquiBaseSample.domains.State;
 import itsm.liquiBaseSample.mappers.StateRowMapper;
 import itsm.liquiBaseSample.services.global.GlobalServiceImpl;
@@ -26,6 +28,12 @@ public class StateServiceImpl extends GlobalServiceImpl<State> implements StateS
         jdbcTemplate.update("insert into " + getTableName() +
                         " (code, name) values(?,?)",
                 item.getCode(), item.getName());
+    }
+
+    @Cached(cacheImpl = StateCacheImpl.class)
+    @Override
+    public State findById(Integer id) throws Exception {
+        return super.findById(id);
     }
 
     @Override

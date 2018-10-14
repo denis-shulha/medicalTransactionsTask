@@ -1,6 +1,7 @@
 package itsm.liquiBaseSample.configurations;
 
 import itsm.liquiBaseSample.auditors.GlobalAuditor;
+import itsm.liquiBaseSample.cache.EntityCache;
 import itsm.liquiBaseSample.mappers.AuditRecordRowMapper;
 import itsm.liquiBaseSample.menu.*;
 import itsm.liquiBaseSample.services.audit.AuditService;
@@ -19,8 +20,10 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.inject.Provider;
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -64,16 +67,17 @@ public class AppConfiguration {
         return new DataSourceTransactionManager(dataSource);
     }
 
-   /* @Bean
-    public  AuditService auditService(AuditRecordRowMapper mapper) {
-        return new AuditServiceImpl(jdbcTemplate(), mapper);
-    }
-*/
     @Bean
     @Lazy
     public GlobalAuditor globalAuditor(AuditService auditService) {
         boolean enabled = Boolean.parseBoolean(env.getProperty("options.auditable"));
         return new GlobalAuditor(auditService, enabled);
+    }
+
+    @Bean
+    @Lazy
+    public Provider<List<EntityCache>> provider(List<EntityCache> items) {
+        return () -> items;
     }
 
     @Bean

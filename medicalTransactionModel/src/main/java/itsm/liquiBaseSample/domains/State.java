@@ -1,6 +1,6 @@
 package itsm.liquiBaseSample.domains;
 
-public class State {
+public class State implements IEntity {
 
     private Integer id;
     private String code;
@@ -48,5 +48,14 @@ public class State {
             return false;
         else
             return this.id.equals(state.getId());
+    }
+
+    @Override
+    public String toString() {
+        return "State{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

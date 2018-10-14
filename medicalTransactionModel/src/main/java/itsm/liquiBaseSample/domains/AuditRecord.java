@@ -2,7 +2,7 @@ package itsm.liquiBaseSample.domains;
 
 import java.util.Date;
 
-public class AuditRecord {
+public class AuditRecord implements IEntity {
     private Integer id;
     private String action;
     private Date date;
@@ -48,5 +48,15 @@ public class AuditRecord {
         this.action = action;
         this.date = date;
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "AuditRecord{" +
+                "id=" + id +
+                ", action='" + action + '\'' +
+                ", date=" + date +
+                ", status=" + status +
+                '}';
     }
 }

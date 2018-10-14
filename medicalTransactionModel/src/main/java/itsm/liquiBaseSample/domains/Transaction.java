@@ -2,7 +2,7 @@ package itsm.liquiBaseSample.domains;
 
 import java.util.Date;
 
-public class Transaction {
+public class Transaction implements IEntity {
 
     private Integer id;
     private Patient patient;
@@ -49,5 +49,15 @@ public class Transaction {
         this.patient = patient;
         this.product = product;
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", patient=" + patient +
+                ", product=" + product +
+                ", date=" + date +
+                '}';
     }
 }

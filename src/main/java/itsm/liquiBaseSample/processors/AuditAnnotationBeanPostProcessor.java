@@ -45,8 +45,8 @@ public class AuditAnnotationBeanPostProcessor implements BeanPostProcessor {
                                     method.getName(),
                                     method.getParameterTypes()).getAnnotation(Audit.class);
                             if (annotation != null) {
-                               final Class<? extends GlobalAuditor> auditorClass = ((Audit) annotation).using();
-                               final String action = ((Audit) annotation).action();
+                               String argsString = (args != null && args.length > 0) ? args[0].toString() : "";
+                               final String action = ((Audit) annotation).action() + argsString;
                                return auditor.doAudit(action, bean, method, args);
                             }
                             else

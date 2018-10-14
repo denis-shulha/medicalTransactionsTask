@@ -20,14 +20,14 @@ public class GlobalAuditor implements CustomAuditor {
 
    public Object doAudit(String action, Object rootObject, Method method, Object[] args) throws Exception {
       if(!enabled)
-         return method.invoke(action,rootObject,method,args);
+         return method.invoke(action, rootObject, method, args);
       Object returnValue;
       try {
-         returnValue = method.invoke(rootObject,args);
-         auditService.add(new AuditRecord(action,Calendar.getInstance().getTime(),true));
+         returnValue = method.invoke(rootObject, args);
+         auditService.add(new AuditRecord(action, Calendar.getInstance().getTime(),true));
       }
       catch(Exception ex) {
-         auditService.add(new AuditRecord(action,Calendar.getInstance().getTime(),false));
+         auditService.add(new AuditRecord(action, Calendar.getInstance().getTime(),false));
          throw ex;
       }
       return returnValue;
