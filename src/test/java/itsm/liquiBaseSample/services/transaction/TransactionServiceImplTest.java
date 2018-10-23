@@ -1,6 +1,6 @@
 package itsm.liquiBaseSample.services.transaction;
 
-import itsm.liquiBaseSample.Exceptions.WrongStateException;
+import itsm.liquiBaseSample.exceptions.WrongStateException;
 import itsm.liquiBaseSample.domains.Patient;
 import itsm.liquiBaseSample.domains.Product;
 import itsm.liquiBaseSample.domains.State;
@@ -17,6 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -29,10 +30,13 @@ public class TransactionServiceImplTest {
 
 
     @Mock
+    private EntityManager transactionMockEntityManager;
+
+    @Mock
     private JdbcTemplate transactionMockJdbcTemplate;
 
     @InjectMocks
-    private TransactionService transactionService = new TransactionServiceImpl(transactionMockJdbcTemplate, new TransactionRowMapper());
+    private TransactionService transactionService = new TransactionServiceImpl(transactionMockEntityManager);
 
     @Mock
     private PatientService patientService;
@@ -56,7 +60,7 @@ public class TransactionServiceImplTest {
 
         when(patientService.findById(anyInt())).thenReturn(patient);
         when(productService.findById(anyInt())).thenReturn(product);
-        when(transactionMockJdbcTemplate.update(anyString())).thenReturn(0);
+        //when(transactionMockEntityManager.persist(anyString())).thenReturn;
     }
 
     @Test(expected = WrongStateException.class)
@@ -67,6 +71,6 @@ public class TransactionServiceImplTest {
         Date date = Calendar.getInstance().getTime();
         Transaction transaction = new Transaction(patient,product,date);
         // trying to save incorrect transaction (state missmatch)
-        transactionService.add(transaction);
+        transactionService.update(transaction);
     }
 }

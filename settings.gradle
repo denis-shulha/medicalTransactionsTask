@@ -1,4 +1,5 @@
 rootProject.name = 'liquiBaseSample'
 include 'medicalTransactionModel'
 include 'transactionsReporting'
+include 'jmsUtils'
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="denis" id="createReportLog">
+        <createTable tableName="report_log">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="start_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_state" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="result" type="varchar(1000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sender" type="varchar(100)"/>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+        <rollback>
+            <dropTable tableName="report_log"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="denis" id="addReportStateForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="id_state"
+                                 baseTableName="report_log"
+                                 constraintName="fk_reports_states"
+                                 onDelete="NO ACTION"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="states"/>
+        <rollback>
+            <dropForeignKeyConstraint
+                    baseTableName="report_log" constraintName="fk_reports_states"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

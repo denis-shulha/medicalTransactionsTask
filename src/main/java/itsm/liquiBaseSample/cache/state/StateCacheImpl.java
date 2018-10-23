@@ -3,12 +3,10 @@ package itsm.liquiBaseSample.cache.state;
 
 import itsm.liquiBaseSample.cache.EntityCacheImpl;
 import itsm.liquiBaseSample.domains.State;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StateCacheImpl extends EntityCacheImpl<State> implements StateCache {
-
-    public StateCacheImpl(Integer cacheCapacity) {
-        super(cacheCapacity);
-    }
 
     @Override
     public boolean accept(Object item) {

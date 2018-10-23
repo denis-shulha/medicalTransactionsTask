@@ -3,7 +3,6 @@ package itsm.liquiBaseSample.menu;
 import itsm.liquiBaseSample.domains.Patient;
 import itsm.liquiBaseSample.domains.State;
 import itsm.liquiBaseSample.services.patient.PatientService;
-import itsm.liquiBaseSample.services.state.StateService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -47,7 +46,7 @@ public class PatientsMenuItem extends ConsoleMenuItem {
             System.out.println("enter state id:");
             state.setId(scanner.nextInt());
             item.setState(state);
-            patientService.add(item);
+            patientService.update(item);
             return "patient added";
         }
         catch (Exception ex) {

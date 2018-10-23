@@ -2,12 +2,10 @@ package itsm.liquiBaseSample.cache.patient;
 
 import itsm.liquiBaseSample.cache.EntityCacheImpl;
 import itsm.liquiBaseSample.domains.Patient;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PatientCacheImpl extends EntityCacheImpl<Patient> implements PatientCache {
-
-    public PatientCacheImpl(Integer cacheCapacity) {
-        super(cacheCapacity);
-    }
 
     @Override
     public boolean accept(Object item) {

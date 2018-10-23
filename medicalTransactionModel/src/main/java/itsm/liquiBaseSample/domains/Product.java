@@ -1,9 +1,10 @@
 package itsm.liquiBaseSample.domains;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "goods")
 public class Product implements IEntity {
-    private Integer id;
-    private String name;
-    private State state;
 
     public String getName() {
         return name;
@@ -46,4 +47,16 @@ public class Product implements IEntity {
                 ", state=" + state +
                 '}';
     }
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "name")
+    private String name;
+
+    @ManyToOne(targetEntity = State.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_state")
+    private State state;
 }

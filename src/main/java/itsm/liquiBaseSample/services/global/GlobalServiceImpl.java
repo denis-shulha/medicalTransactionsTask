@@ -1,53 +1,46 @@
 package itsm.liquiBaseSample.services.global;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
-public abstract class GlobalServiceImpl<E> implements GlobalService<E> {
+public abstract class GlobalServiceImpl<T> implements GlobalService<T> {
 
-    protected JdbcTemplate jdbcTemplate;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    protected RowMapper<E> mapper;
+    protected abstract Class getEntityClass();
 
-    protected  String getQuerySelect() {
-        return "select * from " + getTableName();
+    @Override
+    public List<T> findAll() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
+        Root<T> root = cq.from(getEntityClass());
+        cq.select(root);
+        return entityManager.createQuery(cq).getResultList();
     }
 
     @Override
-    public List<E> findAll() {
-        return jdbcTemplate.query(getQuerySelect(), mapper);
-    }
-
-    protected  abstract String getTableName();
-
-    @Override
-    public void add(E item) throws Exception {
+    @Transactional
+    public void update(T item) throws Exception {
+        entityManager.persist(item);
     }
 
     @Override
-    public void update(E item) throws Exception {
-    }
-
-    @Override
+    @Transactional
     public void deleteById(Integer itemId) throws Exception {
-       if (jdbcTemplate.update("delete from " + getTableName() + " where id=?", itemId) == 0)
-           throw new Exception("Nothing to delete");
+        T item = findById(itemId);
+        entityManager.remove(item);
+        entityManager.flush();
     }
 
     @Override
-    public E findById(Integer itemId) throws Exception{
-        return  jdbcTemplate.queryForObject(getQuerySelect() +
-                " where " + getTableName() + ".id=?",mapper,itemId);
-    }
-
-    public GlobalServiceImpl(JdbcTemplate jdbcTemplate, RowMapper<E> mapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.mapper = mapper;
-    }
-
-    public GlobalServiceImpl() {
-
+    public T findById(Integer itemId) throws Exception{
+        return  (T)entityManager.find(getEntityClass(), itemId);
     }
 }

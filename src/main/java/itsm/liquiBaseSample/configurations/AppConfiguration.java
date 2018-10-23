@@ -1,11 +1,10 @@
 package itsm.liquiBaseSample.configurations;
 
 import itsm.liquiBaseSample.auditors.GlobalAuditor;
-import itsm.liquiBaseSample.cache.EntityCache;
-import itsm.liquiBaseSample.mappers.AuditRecordRowMapper;
+import itsm.liquiBaseSample.jms.JmsMessageSender;
+import itsm.liquiBaseSample.jms.ReportRequestListener;
 import itsm.liquiBaseSample.menu.*;
 import itsm.liquiBaseSample.services.audit.AuditService;
-import itsm.liquiBaseSample.services.audit.AuditServiceImpl;
 import itsm.liquiBaseSample.services.patient.PatientService;
 import itsm.liquiBaseSample.services.product.ProductService;
 import itsm.liquiBaseSample.services.state.StateService;
@@ -14,21 +13,26 @@ import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.inject.Provider;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 @Configuration
 @ComponentScan("itsm.liquiBaseSample")
 @PropertySource("classpath:jdbc.properties")
+@PropertySource("classpath:cache.properties")
+@PropertySource("classpath:hibernate.properties")
 @EnableTransactionManagement
 public class AppConfiguration {
 
@@ -45,26 +49,48 @@ public class AppConfiguration {
         return dataSource;
     }
 
-    @Bean("liquibase")
-    public SpringLiquibase liquibase(DataSource dataSource){
+    @Bean("liquiBase")
+    public SpringLiquibase liquiBase(DataSource dataSource){
         System.out.println("liquibase init");
-        SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setDataSource(dataSource);
-        liquibase.setChangeLog(env.getProperty("liquibase.changelog"));
-        liquibase.setShouldRun(true);
-        return liquibase;
+        SpringLiquibase liquiBase = new SpringLiquibase();
+        liquiBase.setDataSource(dataSource);
+        liquiBase.setChangeLog(env.getProperty("liquibase.changelog"));
+        liquiBase.setShouldRun(true);
+        return liquiBase;
+    }
+
+    @Bean("entityManagerFactory")
+    @DependsOn("liquiBase")
+    public LocalContainerEntityManagerFactoryBean getEntityManager(JpaVendorAdapter vendorAdapter, DataSource dataSource) {
+        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+        factoryBean.setDataSource(dataSource);
+        factoryBean.setJpaVendorAdapter(vendorAdapter);
+        factoryBean.setPackagesToScan("itsm.liquiBaseSample.domains");
+        factoryBean.setJpaProperties(properties());
+        return factoryBean;
+    }
+
+    private Properties properties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        return properties;
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate() {
-        JdbcTemplate template = new JdbcTemplate();
-        template.setDataSource(dataSource());
-        return template;
+    public EntityManager entityManagerInstance(EntityManagerFactory factory) {
+        return factory.createEntityManager();
+    }
+
+    @Bean("vendorAdapter")
+    public JpaVendorAdapter getVendorAdapter() {
+        return new HibernateJpaVendorAdapter();
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
+    public PlatformTransactionManager transactionManager(EntityManagerFactory factory) {
+        return new JpaTransactionManager(factory);
     }
 
     @Bean
@@ -72,12 +98,6 @@ public class AppConfiguration {
     public GlobalAuditor globalAuditor(AuditService auditService) {
         boolean enabled = Boolean.parseBoolean(env.getProperty("options.auditable"));
         return new GlobalAuditor(auditService, enabled);
-    }
-
-    @Bean
-    @Lazy
-    public Provider<List<EntityCache>> provider(List<EntityCache> items) {
-        return () -> items;
     }
 
     @Bean
@@ -97,7 +117,7 @@ public class AppConfiguration {
     }
 
     @Bean
-    public  PatientsMenuItem patientsMenuItem(PatientService patientService) {
+    public PatientsMenuItem patientsMenuItem(PatientService patientService) {
         PatientsMenuItem patientsMenuItem = new PatientsMenuItem();
         patientsMenuItem.setName("patients");
         patientsMenuItem.setPatientService(patientService);
@@ -105,9 +125,9 @@ public class AppConfiguration {
     }
 
     @Bean
-    public  TransactionsMenuItem transactionsMenuItem(TransactionService transactionService,
-                                                      ProductService productService,
-                                                      PatientService patientService) {
+    public TransactionsMenuItem transactionsMenuItem(TransactionService transactionService,
+                                                     ProductService productService,
+                                                     PatientService patientService) {
         TransactionsMenuItem transactionsMenuItem = new TransactionsMenuItem();
         transactionsMenuItem.setTransactionService(transactionService);
         transactionsMenuItem.setProductService(productService);
@@ -117,16 +137,28 @@ public class AppConfiguration {
     }
 
     @Bean
+    @Lazy
+    public ReportMenuItem reportMenuItemMenuItem(JmsMessageSender sender,
+                                                 ReportRequestListener listener,
+                                                 StateService stateService) {
+        ReportMenuItem reportMenuItem = new ReportMenuItem(stateService, sender, listener);
+        reportMenuItem.setName("reports");
+        return reportMenuItem;
+    }
+
+    @Bean
     public MenuHandler menuHandler(MainMenuItem mainMenuItem,
                                    StatesMenuItem statesMenuItem,
                                    ProductsMenuItem productsMenuItem,
                                    PatientsMenuItem patientsMenuItem,
-                                   TransactionsMenuItem transactionsMenuItem) {
+                                   TransactionsMenuItem transactionsMenuItem,
+                                   ReportMenuItem reportMenuItem) {
         Map<String, ConsoleMenuItem> subItems = new HashMap<>();
         subItems.put("1", statesMenuItem);
         subItems.put("2",patientsMenuItem);
         subItems.put("3", productsMenuItem);
         subItems.put("4", transactionsMenuItem);
+        subItems.put("5", reportMenuItem);
         mainMenuItem.setName("Choose category:");
         mainMenuItem.setChildItems(subItems);
         return new MenuHandler(mainMenuItem);

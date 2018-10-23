@@ -3,7 +3,6 @@ package itsm.liquiBaseSample.menu;
 import itsm.liquiBaseSample.domains.Product;
 import itsm.liquiBaseSample.domains.State;
 import itsm.liquiBaseSample.services.product.ProductService;
-import itsm.liquiBaseSample.services.state.StateService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -53,7 +52,7 @@ public class ProductsMenuItem extends ConsoleMenuItem {
             System.out.println("enter state id:");
             state.setId(scanner.nextInt());
             item.setState(state);
-            productService.add(item);
+            productService.update(item);
             return "product info added";
         }
         catch (Exception ex) {

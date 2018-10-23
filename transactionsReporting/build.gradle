@@ -12,6 +12,7 @@ repositories {
 dependencies {
 
     compile project(':medicalTransactionModel')
+    compile project(':jmsUtils')
 
     compile 'org.springframework:spring-core:5.0.8.RELEASE'
     compile 'org.springframework:spring-beans:5.0.8.RELEASE'
@@ -24,6 +25,11 @@ dependencies {
     compile group: 'org.mybatis', name: 'mybatis-spring', version: '1.2.2'
     compile 'mysql:mysql-connector-java:6.0.6'
 
+    /*compile("org.apache.activemq:activemq-all:5.14.1")
+    // https://mvnrepository.com/artifact/org.springframework/spring-jms
+    compile group: 'org.springframework', name: 'spring-jms', version: '4.3.3.RELEASE'
+    compile("com.fasterxml.jackson.core:jackson-databind")*/
+
     compile group: 'org.apache.poi', name: 'poi', version: '3.9'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.9'
 
@@ -31,7 +37,7 @@ dependencies {
 
     jar {
         manifest {
-            attributes 'Main-Class': 'itsm.liquiBaseSample.runner.RunnerMain'
+            attributes 'Main-Class': 'itsm.liquiBaseSample.runner.ReportRunnerMain'
         }
         from {
             configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }

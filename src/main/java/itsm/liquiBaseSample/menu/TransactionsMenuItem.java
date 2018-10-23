@@ -68,7 +68,7 @@ public class TransactionsMenuItem extends ConsoleMenuItem {
             Patient patient = patientService.findById(scanner.nextInt());
             item.setProduct(product);
             item.setPatient(patient);
-            transactionService.add(item);
+            transactionService.update(item);
             return "product sold";
         }
         catch (Exception ex) {

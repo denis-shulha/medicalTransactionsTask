@@ -1,13 +1,13 @@
 package itsm.liquiBaseSample.domains;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "transactions")
 public class Transaction implements IEntity {
-
-    private Integer id;
-    private Patient patient;
-    private Product product;
-    private Date date;
 
     public Integer getId() {
         return id;
@@ -60,4 +60,22 @@ public class Transaction implements IEntity {
                 ", date=" + date +
                 '}';
     }
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @ManyToOne(targetEntity = Patient.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_patient")
+    private Patient patient;
+
+    @ManyToOne(targetEntity = Product.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_product")
+    private Product product;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date")
+    @CreationTimestamp
+    private Date date;
 }

@@ -13,5 +13,6 @@
 
     <include file="v1/initialChangeSet.xml" relativeToChangelogFile="true"/>
     <include file="v1/addingStatesChangeSet.xml" relativeToChangelogFile="true"/>
+    <include file="v1/addingReportLogTable.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

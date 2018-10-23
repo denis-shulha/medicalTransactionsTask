@@ -24,10 +24,10 @@ public class GlobalAuditor implements CustomAuditor {
       Object returnValue;
       try {
          returnValue = method.invoke(rootObject, args);
-         auditService.add(new AuditRecord(action, Calendar.getInstance().getTime(),true));
+         auditService.update(new AuditRecord(action, Calendar.getInstance().getTime(),true));
       }
       catch(Exception ex) {
-         auditService.add(new AuditRecord(action, Calendar.getInstance().getTime(),false));
+         auditService.update(new AuditRecord(action, Calendar.getInstance().getTime(),false));
          throw ex;
       }
       return returnValue;

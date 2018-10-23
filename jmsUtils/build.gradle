@@ -1,0 +1,19 @@
+group 'itsm'
+version '1.0'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    compile("org.apache.activemq:activemq-all:5.14.1")
+    // https://mvnrepository.com/artifact/org.springframework/spring-jms
+    compile group: 'org.springframework', name: 'spring-jms', version: '4.3.3.RELEASE'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

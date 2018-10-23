@@ -1,9 +1,20 @@
 package itsm.liquiBaseSample.domains;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "states")
 public class State implements IEntity {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "code")
     private String code;
+
+    @Column(name = "name")
     private String name;
 
     public Integer getId() {

@@ -1,11 +1,10 @@
 package itsm.liquiBaseSample.domains;
 
-public class Patient implements IEntity {
+import javax.persistence.*;
 
-    private Integer id;
-    private String name;
-    private String phone;
-    private State state;
+@Entity
+@Table(name = "patients")
+public class Patient implements IEntity {
 
     public Integer getId() {
         return id;
@@ -58,4 +57,19 @@ public class Patient implements IEntity {
                 ", state=" + state +
                 '}';
     }
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @ManyToOne(targetEntity = State.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_state")
+    private State state;
 }

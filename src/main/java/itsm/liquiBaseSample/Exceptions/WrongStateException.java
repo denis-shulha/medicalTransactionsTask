@@ -1,4 +1,4 @@
-package itsm.liquiBaseSample.Exceptions;
+package itsm.liquiBaseSample.exceptions;
 
 public class WrongStateException extends Exception {
 

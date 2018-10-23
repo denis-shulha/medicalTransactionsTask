@@ -7,7 +7,6 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Provider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
@@ -21,8 +20,8 @@ public class CachedAnnotationBeanPostProcessor  implements BeanPostProcessor {
 
     private List<EntityCache> caches;
 
-    public CachedAnnotationBeanPostProcessor(@Lazy Provider<List<EntityCache>> cacheProvider) {
-        this.caches = cacheProvider.get();
+    public CachedAnnotationBeanPostProcessor(@Lazy List<EntityCache> caches) {
+        this.caches = caches;
     }
 
     @Override

@@ -1,17 +1,9 @@
 package itsm.liquiBaseSample.configurations;
 
-import itsm.liquiBaseSample.menu.MainMenuItem;
-import itsm.liquiBaseSample.menu.MenuHandler;
-import itsm.liquiBaseSample.persistence.StateMapper;
-import itsm.liquiBaseSample.persistence.TransactionMapper;
-import itsm.liquiBaseSample.services.report.TransactionReportService;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.EnvironmentAware;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -39,7 +31,7 @@ public class ReportAppConfiguration implements EnvironmentAware {
         return dataSource;
     }
 
-    @Bean("myBatisSessionFactory")
+    @Bean
     public SqlSessionFactoryBean sqlSessionFactory(DriverManagerDataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource);
@@ -52,22 +44,5 @@ public class ReportAppConfiguration implements EnvironmentAware {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
         configurer.setBasePackage("itsm/liquiBaseSample/persistence");
         return configurer;
-    }
-
-    @Bean
-    public MainMenuItem mainMenuItem(StateMapper stateMapper,
-                                     TransactionMapper transactionMapper,
-                                     TransactionReportService reportService) {
-        MainMenuItem mainMenuItem = new MainMenuItem();
-        mainMenuItem.setStateMapper(stateMapper);
-        mainMenuItem.setTransactionMapper(transactionMapper);
-        mainMenuItem.setTransactionReportService(reportService);
-        mainMenuItem.setName("Choose operation");
-        return mainMenuItem;
-    }
-
-    @Bean
-    public MenuHandler menuHandler(MainMenuItem menuItem) {
-        return new MenuHandler(menuItem);
     }
 }

@@ -1,12 +1,11 @@
 package itsm.liquiBaseSample.domains;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "audit")
 public class AuditRecord implements IEntity {
-    private Integer id;
-    private String action;
-    private Date date;
-    private boolean status;
 
     public Integer getId() {
         return id;
@@ -59,4 +58,19 @@ public class AuditRecord implements IEntity {
                 ", status=" + status +
                 '}';
     }
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "action")
+    private String action;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date")
+    private Date date;
+
+    @Column(name = "status")
+    private boolean status;
 }
