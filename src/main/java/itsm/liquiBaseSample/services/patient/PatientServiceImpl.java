@@ -15,6 +15,13 @@ public class PatientServiceImpl extends GlobalServiceImpl<Patient> implements Pa
     }
 
     @Override
+    @Audit(action = "adding new patient")
+    @Transactional
+    public void insert(Patient item) throws Exception{
+        super.insert(item);
+    }
+
+    @Override
     @Audit(action = "updating patient info")
     @Transactional
     public void update(Patient item) throws Exception{
@@ -30,6 +37,7 @@ public class PatientServiceImpl extends GlobalServiceImpl<Patient> implements Pa
 
     @Override
     @Audit(action = "searching for patient")
+    @Transactional
     public Patient findById(Integer patientId) throws Exception {
         return super.findById(patientId);
     }

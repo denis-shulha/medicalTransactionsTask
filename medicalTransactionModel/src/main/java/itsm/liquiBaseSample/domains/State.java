@@ -2,9 +2,9 @@ package itsm.liquiBaseSample.domains;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "states")
 @Table(name = "states")
-public class State implements IEntity {
+public class State extends ModifiableEntity implements IEntity {
 
     @Id
     @Column(name = "id")

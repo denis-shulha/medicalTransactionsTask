@@ -72,7 +72,7 @@ public class TransactionReportServiceImpl implements TransactionReportService {
             Row row = sheet.createRow(rowNum++);
             createStyledCellWithValue(row,colNum,tableCellStyle, item.getProduct().getName());
             createStyledCellWithValue(row,colNum + 1, tableCellStyle, item.getPatient().getName());
-            createStyledCellWithValue(row,colNum + 2, dateCellStyle, item.getDate());
+            createStyledCellWithValue(row,colNum + 2, dateCellStyle, item.getCreatedDate());
         }
 
         // Resize all columns to fit the content size

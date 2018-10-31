@@ -5,13 +5,11 @@ import itsm.liquiBaseSample.annotations.Audit;
 import itsm.liquiBaseSample.domains.Patient;
 import itsm.liquiBaseSample.domains.Product;
 import itsm.liquiBaseSample.domains.Transaction;
-import itsm.liquiBaseSample.mappers.TransactionRowMapper;
 import itsm.liquiBaseSample.services.global.GlobalServiceImpl;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import java.util.List;
 
 @Service
 public class TransactionServiceImpl extends GlobalServiceImpl<Transaction> implements TransactionService {
@@ -23,15 +21,24 @@ public class TransactionServiceImpl extends GlobalServiceImpl<Transaction> imple
 
     @Override
     @Audit(action = "sailing product")
-    public void update(Transaction transaction) throws Exception {
+    @Transactional
+    public void insert(Transaction transaction) throws Exception {
         if (transaction != null) {
             Patient patient = transaction.getPatient();
             Product product = transaction.getProduct();
             if (product.getState().equals(patient.getState())) {
-                super.update(transaction);
+                super.insert(transaction);
             }
             else
                 throw new WrongStateException("patient and product are from different states");
         }
+    }
+
+    @Override
+    public List<Transaction> findByUserLogin(String userLogin) {
+        String query = String.format("select t " +
+                "from transactions t " +
+                "where t.createdBy.login = '%s'",userLogin);
+        return entityManager.createQuery(query,Transaction.class).getResultList();
     }
 }

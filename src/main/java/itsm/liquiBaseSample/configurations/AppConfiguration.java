@@ -21,7 +21,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -59,7 +58,7 @@ public class AppConfiguration {
         return liquiBase;
     }
 
-    @Bean("entityManagerFactory")
+    @Bean
     @DependsOn("liquiBase")
     public LocalContainerEntityManagerFactoryBean getEntityManager(JpaVendorAdapter vendorAdapter, DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -67,6 +66,7 @@ public class AppConfiguration {
         factoryBean.setJpaVendorAdapter(vendorAdapter);
         factoryBean.setPackagesToScan("itsm.liquiBaseSample.domains");
         factoryBean.setJpaProperties(properties());
+        
         return factoryBean;
     }
 
@@ -79,11 +79,6 @@ public class AppConfiguration {
     }
 
     @Bean
-    public EntityManager entityManagerInstance(EntityManagerFactory factory) {
-        return factory.createEntityManager();
-    }
-
-    @Bean("vendorAdapter")
     public JpaVendorAdapter getVendorAdapter() {
         return new HibernateJpaVendorAdapter();
     }

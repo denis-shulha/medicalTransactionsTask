@@ -1,10 +1,11 @@
 package itsm.liquiBaseSample.domains;
 
+
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "patients")
 @Table(name = "patients")
-public class Patient implements IEntity {
+public class Patient extends ModifiableEntity implements IEntity {
 
     public Integer getId() {
         return id;
@@ -69,7 +70,7 @@ public class Patient implements IEntity {
     @Column(name = "phone")
     private String phone;
 
-    @ManyToOne(targetEntity = State.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = State.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_state")
     private State state;
 }

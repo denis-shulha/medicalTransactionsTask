@@ -1,13 +1,11 @@
 package itsm.liquiBaseSample.domains;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@Entity(name = "transactions")
 @Table(name = "transactions")
-public class Transaction implements IEntity {
+public class Transaction extends ModifiableEntity implements IEntity {
 
     public Integer getId() {
         return id;
@@ -33,14 +31,6 @@ public class Transaction implements IEntity {
         this.product = product;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public Transaction() {
 
     }
@@ -48,7 +38,7 @@ public class Transaction implements IEntity {
     public Transaction(Patient patient, Product product, Date date) {
         this.patient = patient;
         this.product = product;
-        this.date = date;
+        this.createdDate = date;
     }
 
     @Override
@@ -57,7 +47,6 @@ public class Transaction implements IEntity {
                 "id=" + id +
                 ", patient=" + patient +
                 ", product=" + product +
-                ", date=" + date +
                 '}';
     }
 
@@ -74,8 +63,4 @@ public class Transaction implements IEntity {
     @JoinColumn(name = "id_product")
     private Product product;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date")
-    @CreationTimestamp
-    private Date date;
 }

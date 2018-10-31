@@ -46,7 +46,7 @@ public class PatientsMenuItem extends ConsoleMenuItem {
             System.out.println("enter state id:");
             state.setId(scanner.nextInt());
             item.setState(state);
-            patientService.update(item);
+            patientService.insert(item);
             return "patient added";
         }
         catch (Exception ex) {

@@ -42,7 +42,7 @@ public class StatesMenuItem extends ConsoleMenuItem {
             System.out.println("enter state name:");
             item.setName(scanner.next());
 
-            stateService.update(item);
+            stateService.insert(item);
             return "state added";
         }
         catch (Exception ex) {

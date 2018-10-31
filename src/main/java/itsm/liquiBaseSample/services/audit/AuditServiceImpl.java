@@ -16,7 +16,7 @@ public class AuditServiceImpl extends GlobalServiceImpl<AuditRecord> implements 
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void update(AuditRecord record) throws Exception {
-        super.update(record);
+    public void insert(AuditRecord record) throws Exception {
+        super.insert(record);
     }
 }

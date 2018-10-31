@@ -8,6 +8,27 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="1" author="denis">
+        <createTable tableName="users">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="login" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(250)">
+            </column>
+            <column name="email" type="varchar(100)">
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="users"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2" author="denis">
         <createTable tableName="goods">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -18,13 +39,37 @@
             <column name="id_state" type="int">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_by" type="int">
+            </column>
+            <column name="created_date" type="timestamp">
+            </column>
+            <column name="modified_by" type="int">
+            </column>
+            <column name="modified_date" type="timestamp">
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="goods"/>
         </rollback>
     </changeSet>
 
-    <changeSet id="2" author="denis">
+    <changeSet author="denis" id="addProductCUserForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="created_by"
+                                 baseTableName="goods"
+                                 constraintName="fk_goods_c_users"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet author="denis" id="addProductMUserForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="modified_by"
+                                 baseTableName="goods"
+                                 constraintName="fk_goods_m_users"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet id="3" author="denis">
         <createTable tableName="patients">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -38,13 +83,37 @@
             <column name="id_state" type="int">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_by" type="int">
+            </column>
+            <column name="created_date" type="timestamp">
+            </column>
+            <column name="modified_by" type="int">
+            </column>
+            <column name="modified_date" type="timestamp">
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="patients"/>
         </rollback>
     </changeSet>
 
-    <changeSet id="3" author="denis">
+    <changeSet author="denis" id="addPatientCUserForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="created_by"
+                                 baseTableName="patients"
+                                 constraintName="fk_patients_c_users"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet author="denis" id="addPatientMUserForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="modified_by"
+                                 baseTableName="patients"
+                                 constraintName="fk_patients_m_users"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet id="4" author="denis">
         <createTable tableName="states">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -55,10 +124,34 @@
             <column name="name" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_by" type="int">
+            </column>
+            <column name="created_date" type="timestamp">
+            </column>
+            <column name="modified_by" type="int">
+            </column>
+            <column name="modified_date" type="timestamp">
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="states"/>
         </rollback>
+    </changeSet>
+
+    <changeSet author="denis" id="addStateCUserForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="created_by"
+                                 baseTableName="states"
+                                 constraintName="fk_states_c_users"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet author="denis" id="addStateMUserForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="modified_by"
+                                 baseTableName="states"
+                                 constraintName="fk_states_m_users"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
     </changeSet>
 
     <changeSet author="denis" id="addProductStateForeignKeyConstraint">
@@ -81,7 +174,7 @@
                                  referencedTableName="states"/>
     </changeSet>
 
-    <changeSet id="4" author="denis">
+    <changeSet id="5" author="denis">
         <createTable tableName="transactions">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -92,8 +185,13 @@
             <column name="id_product" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="date" type="timestamp">
-                <constraints nullable="false"/>
+            <column name="created_by" type="int">
+            </column>
+            <column name="created_date" type="timestamp">
+            </column>
+            <column name="modified_by" type="int">
+            </column>
+            <column name="modified_date" type="timestamp">
             </column>
         </createTable>
         <rollback>
@@ -121,7 +219,23 @@
                                  referencedTableName="patients"/>
     </changeSet>
 
-    <changeSet id="5" author="denis">
+    <changeSet author="denis" id="addTransactionCUserForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="created_by"
+                                 baseTableName="transactions"
+                                 constraintName="fk_transactions_c_users"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet author="denis" id="addTransactionMUserForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="modified_by"
+                                 baseTableName="transactions"
+                                 constraintName="fk_transactions_m_users"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet id="6" author="denis">
         <createTable tableName="audit">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -132,7 +246,7 @@
             <column name="status" type="bool">
                 <constraints nullable="false"/>
             </column>
-            <column name="action" type="varchar(100)">
+            <column name="action" type="varchar(1000)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

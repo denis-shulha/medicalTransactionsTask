@@ -6,6 +6,7 @@ import itsm.liquiBaseSample.domains.Transaction;
 import itsm.liquiBaseSample.services.patient.PatientService;
 import itsm.liquiBaseSample.services.product.ProductService;
 import itsm.liquiBaseSample.services.transaction.TransactionService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Scanner;
@@ -49,6 +50,10 @@ public class TransactionsMenuItem extends ConsoleMenuItem {
                 System.out.println(processAddRequest());
                 return this;
             }
+            case "2" : {
+                processListByLoginRequest();
+                return this;
+            }
             case "0" :
                 return getParentMenu();
                 default: {
@@ -68,15 +73,29 @@ public class TransactionsMenuItem extends ConsoleMenuItem {
             Patient patient = patientService.findById(scanner.nextInt());
             item.setProduct(product);
             item.setPatient(patient);
-            transactionService.update(item);
+            transactionService.insert(item);
             return "product sold";
         }
         catch (Exception ex) {
             return " error. Product not sold: " + ex.toString();
         }
     }
+    @Transactional
+    protected void processListByLoginRequest() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("enter user login: ");
+        String login = scanner.nextLine();
+        List<Transaction> result = transactionService.findByUserLogin(login);
+        if(result.size() > 0) {
+            System.out.println("transactions made by user " + login + ":");
+            drawTable(result);
+        }
+        else
+            System.out.println("transactions not found");
+    }
 
     @Override
+    @Transactional
     public String getContent() {
         List<Transaction> items = transactionService.findAll();
         String content = getName();
@@ -100,12 +119,12 @@ public class TransactionsMenuItem extends ConsoleMenuItem {
     private String stringifyItem(Transaction item) {
         String productName = item.getProduct() == null ? "" : item.getProduct().getName();
         String patientName = item.getPatient() == null ? "" : item.getPatient().getName();
-        return String.format("|%10s|%20s|%20s|%25s|",item.getId(), productName, patientName, item.getDate());
+        return String.format("|%10s|%20s|%20s|%25s|",item.getId(), productName, patientName, item.getCreatedDate());
     }
 
     @Override
     protected  String drawChildItems() {
-        return "[(1)add] [(0)back]";
+        return "[(1)new sail] [(2) sails by user] [(0)back]";
     }
 
 

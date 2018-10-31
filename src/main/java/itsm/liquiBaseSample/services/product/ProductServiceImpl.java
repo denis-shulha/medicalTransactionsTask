@@ -15,6 +15,14 @@ public class ProductServiceImpl extends GlobalServiceImpl<Product> implements Pr
     }
 
     @Override
+    @Audit(action = "adding new product")
+    @Transactional
+    public void insert(Product product) throws Exception{
+        super.insert(product);
+    }
+
+
+    @Override
     @Audit(action = "updating product")
     @Transactional
     public void update(Product product) throws Exception{
@@ -30,6 +38,7 @@ public class ProductServiceImpl extends GlobalServiceImpl<Product> implements Pr
 
     @Override
     @Audit(action = "searching for product")
+    @Transactional
     public Product findById(Integer productId) throws Exception{
         return super.findById(productId);
     }

@@ -52,7 +52,7 @@ public class ProductsMenuItem extends ConsoleMenuItem {
             System.out.println("enter state id:");
             state.setId(scanner.nextInt());
             item.setState(state);
-            productService.update(item);
+            productService.insert(item);
             return "product info added";
         }
         catch (Exception ex) {

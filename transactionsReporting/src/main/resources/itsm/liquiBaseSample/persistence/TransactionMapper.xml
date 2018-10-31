@@ -35,7 +35,7 @@
         from transactions
         left join patients patient on transactions.id_patient = patient.id
         left join goods product on transactions.id_product = product.id
-        where transactions.date between #{periodStartDate} and #{periodEndDate}
+        where transactions.created_date between #{periodStartDate} and #{periodEndDate}
         and product.id_state= #{stateId};
     </select>
 
@@ -47,7 +47,7 @@
         from transactions
         left join patients patient on transactions.id_patient = patient.id
         left join goods product on transactions.id_product = product.id
-        where date between #{periodStartDate} and #{periodEndDate}
+        where transactions.created_date between #{periodStartDate} and #{periodEndDate}
     </select>
 
 </mapper>

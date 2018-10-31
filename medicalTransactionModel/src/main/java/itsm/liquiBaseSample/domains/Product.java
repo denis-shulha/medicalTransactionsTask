@@ -2,7 +2,7 @@ package itsm.liquiBaseSample.domains;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "goods")
 @Table(name = "goods")
 public class Product implements IEntity {
 
@@ -12,6 +12,10 @@ public class Product implements IEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Product() {
+
     }
 
     public Product(String name, State state) {
@@ -35,10 +39,6 @@ public class Product implements IEntity {
         this.state = state;
     }
 
-    public Product() {
-
-    }
-
     @Override
     public String toString() {
         return "Product{" +
@@ -56,7 +56,7 @@ public class Product implements IEntity {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne(targetEntity = State.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = State.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_state")
     private State state;
 }

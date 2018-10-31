@@ -23,6 +23,13 @@ public class StateServiceImpl extends GlobalServiceImpl<State> implements StateS
     }
 
     @Override
+    @Audit(action = "adding new state")
+    @Transactional
+    public void insert(State item) throws Exception{
+        super.insert(item);
+    }
+
+    @Override
     @Audit(action = "updating state info")
     @Transactional
     public void update(State item) throws Exception{
