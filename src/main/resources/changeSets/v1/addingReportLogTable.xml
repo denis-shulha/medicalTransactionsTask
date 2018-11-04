@@ -24,7 +24,7 @@
             <column name="result" type="varchar(1000)">
                 <constraints nullable="true"/>
             </column>
-            <column name="sender" type="varchar(100)"/>
+            <column name="sender" type="int"/>
             <column name="created_date" type="timestamp">
                 <constraints nullable="true"/>
             </column>
@@ -46,6 +46,20 @@
         <rollback>
             <dropForeignKeyConstraint
                     baseTableName="report_log" constraintName="fk_reports_states"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="denis" id="addReportSenderForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="sender"
+                                 baseTableName="report_log"
+                                 constraintName="fk_reports_users"
+                                 onDelete="NO ACTION"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+        <rollback>
+            <dropForeignKeyConstraint
+                    baseTableName="report_log" constraintName="fk_reports_users"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>

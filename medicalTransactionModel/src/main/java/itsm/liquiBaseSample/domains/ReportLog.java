@@ -48,12 +48,12 @@ public class ReportLog implements IEntity {
         this.result = result;
     }
 
-    public String getSenderName() {
-        return senderName;
+    public User getSender() {
+        return sender;
     }
 
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 
     public Date getCreatedDate() {
@@ -84,8 +84,9 @@ public class ReportLog implements IEntity {
     @Column(name = "result")
     private String result;
 
-    @Column(name = "sender")
-    private String senderName;
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender")
+    private User sender;
 
     @Column(name = "created_date")
     private Date createdDate;

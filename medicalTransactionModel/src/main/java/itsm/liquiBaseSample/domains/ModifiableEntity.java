@@ -1,6 +1,5 @@
 package itsm.liquiBaseSample.domains;
 
-import itsm.liquiBaseSample.processors.BeforePersistEntityListener;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -8,7 +7,6 @@ import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass
-//@EntityListeners(BeforePersistEntityListener.class)
 public class ModifiableEntity implements Modifiable {
 
     public User getCreatedBy() {
@@ -40,6 +38,16 @@ public class ModifiableEntity implements Modifiable {
     }
 
     public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public ModifiableEntity() {
+    }
+
+    public ModifiableEntity(User createdBy, Date createdDate, User modifiedBy, Date modifiedDate) {
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.modifiedBy = modifiedBy;
         this.modifiedDate = modifiedDate;
     }
 

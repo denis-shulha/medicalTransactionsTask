@@ -8,15 +8,16 @@ public class TransactionsReportRequest implements Serializable {
     private Date startDate;
     private Date endDate;
     private Integer stateId;
-    private String senderName;
+    private Integer sender;
 
     public TransactionsReportRequest() {
     }
 
-    public TransactionsReportRequest(Date startDate, Date endDate, Integer stateId) {
+    public TransactionsReportRequest(Date startDate, Date endDate, Integer stateId, Integer sender) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.stateId = stateId;
+        this.sender = sender;
     }
 
     public Date getStartDate() {
@@ -43,12 +44,12 @@ public class TransactionsReportRequest implements Serializable {
         this.stateId = stateId;
     }
 
-    public String getSenderName() {
-        return senderName;
+    public Integer getSender() {
+        return sender;
     }
 
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
+    public void setSender(Integer sender) {
+        this.sender = sender;
     }
 
     @Override
@@ -57,7 +58,7 @@ public class TransactionsReportRequest implements Serializable {
                 "startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", stateId=" + stateId +
-                ", senderName='" + senderName + '\'' +
+                ", sender=" + sender +
                 '}';
     }
 }

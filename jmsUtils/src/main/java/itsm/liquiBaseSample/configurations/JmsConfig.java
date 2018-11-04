@@ -5,6 +5,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
@@ -13,6 +14,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MessageConverter;
 
 @Configuration
+@ComponentScan(basePackages = "itsm.liquiBaseSample.jms")
 @PropertySource("classpath:jms.properties")
 public class JmsConfig {
 
@@ -25,7 +27,7 @@ public class JmsConfig {
     @Bean
     public SingleConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(jmsConnectionURL);
-        factory.setTrustAllPackages(true);
+        //factory.setTrustAllPackages(true);
         return new SingleConnectionFactory(factory);
     }
 

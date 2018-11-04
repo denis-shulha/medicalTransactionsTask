@@ -2,6 +2,7 @@ package itsm.liquiBaseSample.requestHandlers;
 
 import itsm.liquiBaseSample.domains.ReportLog;
 import itsm.liquiBaseSample.domains.State;
+import itsm.liquiBaseSample.domains.User;
 import itsm.liquiBaseSample.jms.ReportRequestListener;
 import itsm.liquiBaseSample.jms.TransactionsReportRequest;
 import itsm.liquiBaseSample.persistence.ReportLogMapper;
@@ -52,7 +53,9 @@ public class RequestHandler {
         state.setId(request.getStateId());
         log.setState(state);
         log.setResult(result);
-        log.setSenderName(request.getSenderName());
+        User sender = new User();
+        sender.setId(request.getSender());
+        log.setSender(sender);
         reportLogMapper.insert(log);
         return  result;
     }

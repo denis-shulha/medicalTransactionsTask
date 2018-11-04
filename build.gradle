@@ -25,23 +25,14 @@ dependencies {
     compile project("medicalTransactionModel")
     compile project("jmsUtils")
 
-    compile 'org.springframework:spring-core:5.0.8.RELEASE'
-    compile 'org.springframework:spring-beans:5.0.8.RELEASE'
-    compile 'org.springframework:spring-context:5.0.8.RELEASE'
-    compile 'org.springframework:spring-context-support:5.0.8.RELEASE'
     compile 'org.springframework:spring-jdbc:5.0.8.RELEASE'
     compile 'org.springframework:spring-tx:5.0.8.RELEASE'
-    // https://mvnrepository.com/artifact/org.springframework/spring-orm
     compile group: 'org.springframework', name: 'spring-orm', version: '5.0.8.RELEASE'
 
     compile 'mysql:mysql-connector-java:6.0.6'
 
-   // compile group : 'org.hibernate', name: 'hibernate-core', version: '5.3.7.Final'
-
     compile 'org.liquibase:liquibase-core:3.4.1'
-    //compile "org.liquibase:liquibase-gradle-plugin:1.1.1"
 
-    // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
     compile group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
 
 

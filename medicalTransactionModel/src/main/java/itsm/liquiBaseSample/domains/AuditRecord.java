@@ -39,14 +39,23 @@ public class AuditRecord implements IEntity {
         this.status = status;
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
     public AuditRecord() {
 
     }
 
-    public AuditRecord(String action, Date date, boolean status) {
+    public AuditRecord(String action, Date date, boolean status, User owner) {
         this.action = action;
         this.date = date;
         this.status = status;
+        this.owner = owner;
     }
 
     @Override
@@ -56,6 +65,7 @@ public class AuditRecord implements IEntity {
                 ", action='" + action + '\'' +
                 ", date=" + date +
                 ", status=" + status +
+                ", owner=" + owner +
                 '}';
     }
 
@@ -73,4 +83,8 @@ public class AuditRecord implements IEntity {
 
     @Column(name = "status")
     private boolean status;
+
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner")
+    private User owner;
 }

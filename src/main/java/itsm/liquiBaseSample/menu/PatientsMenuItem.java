@@ -3,6 +3,7 @@ package itsm.liquiBaseSample.menu;
 import itsm.liquiBaseSample.domains.Patient;
 import itsm.liquiBaseSample.domains.State;
 import itsm.liquiBaseSample.services.patient.PatientService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Scanner;
@@ -34,7 +35,8 @@ public class PatientsMenuItem extends ConsoleMenuItem {
         }
     }
 
-    private String processAddRequest() {
+    @Transactional
+    protected String processAddRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
             Patient item = new Patient();
@@ -54,7 +56,8 @@ public class PatientsMenuItem extends ConsoleMenuItem {
         }
     }
 
-    private String processEditRequest() {
+    @Transactional
+    protected String processEditRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.println("enter patient id:");
@@ -86,7 +89,8 @@ public class PatientsMenuItem extends ConsoleMenuItem {
         }
     }
 
-    private String processRemoveRequest() {
+    @Transactional
+    protected String processRemoveRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.println("enter patient id:");
@@ -100,6 +104,7 @@ public class PatientsMenuItem extends ConsoleMenuItem {
     }
 
     @Override
+    @Transactional
     public String getContent() {
         List<Patient> items = patientService.findAll();
         String content = getName();

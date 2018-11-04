@@ -1,6 +1,8 @@
 package itsm.liquiBaseSample.auditors;
 
 import itsm.liquiBaseSample.domains.AuditRecord;
+import itsm.liquiBaseSample.domains.User;
+import itsm.liquiBaseSample.security.CurrentUserInfo;
 import itsm.liquiBaseSample.services.audit.AuditService;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +24,13 @@ public class GlobalAuditor implements CustomAuditor {
       if(!enabled)
          return method.invoke(action, rootObject, method, args);
       Object returnValue;
+      User owner = CurrentUserInfo.get();
       try {
          returnValue = method.invoke(rootObject, args);
-         auditService.insert(new AuditRecord(action, Calendar.getInstance().getTime(),true));
+         auditService.insert(new AuditRecord(action, Calendar.getInstance().getTime(),true, owner));
       }
       catch(Exception ex) {
-         auditService.insert(new AuditRecord(action, Calendar.getInstance().getTime(),false));
+         auditService.insert(new AuditRecord(action, Calendar.getInstance().getTime(),false, owner));
          throw ex;
       }
       return returnValue;

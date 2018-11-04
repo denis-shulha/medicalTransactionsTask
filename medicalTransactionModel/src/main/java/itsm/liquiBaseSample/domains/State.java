@@ -1,10 +1,11 @@
 package itsm.liquiBaseSample.domains;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity(name = "states")
 @Table(name = "states")
-public class State extends ModifiableEntity implements IEntity {
+public class State extends ModifiableEntity implements IEntity, Modifiable {
 
     @Id
     @Column(name = "id")
@@ -69,4 +70,5 @@ public class State extends ModifiableEntity implements IEntity {
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }

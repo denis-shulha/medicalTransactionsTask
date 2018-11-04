@@ -3,13 +3,18 @@ package itsm.liquiBaseSample.configurations;
 import itsm.liquiBaseSample.auditors.GlobalAuditor;
 import itsm.liquiBaseSample.jms.JmsMessageSender;
 import itsm.liquiBaseSample.jms.ReportRequestListener;
+import itsm.liquiBaseSample.jpaEventListeners.JpaMergeOrPersistEntityListener;
 import itsm.liquiBaseSample.menu.*;
 import itsm.liquiBaseSample.services.audit.AuditService;
 import itsm.liquiBaseSample.services.patient.PatientService;
 import itsm.liquiBaseSample.services.product.ProductService;
+import itsm.liquiBaseSample.services.reportLog.ReportLogService;
 import itsm.liquiBaseSample.services.state.StateService;
 import itsm.liquiBaseSample.services.transaction.TransactionService;
 import liquibase.integration.spring.SpringLiquibase;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.event.service.spi.EventListenerRegistry;
+import org.hibernate.event.spi.EventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -66,14 +71,15 @@ public class AppConfiguration {
         factoryBean.setJpaVendorAdapter(vendorAdapter);
         factoryBean.setPackagesToScan("itsm.liquiBaseSample.domains");
         factoryBean.setJpaProperties(properties());
-        
         return factoryBean;
     }
+
 
     private Properties properties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
         properties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        properties.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
         properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         return properties;
     }
@@ -85,7 +91,17 @@ public class AppConfiguration {
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory factory) {
+        configureFactory(factory);
         return new JpaTransactionManager(factory);
+    }
+
+    private void configureFactory(EntityManagerFactory factory) {
+        SessionFactoryImplementor sessionFactory = factory.unwrap(SessionFactoryImplementor.class);
+        EventListenerRegistry eventListenerRegistry = sessionFactory.getServiceRegistry().getService(EventListenerRegistry.class);
+        JpaMergeOrPersistEntityListener listener = new JpaMergeOrPersistEntityListener();
+        eventListenerRegistry.appendListeners(EventType.PERSIST, listener);
+        eventListenerRegistry.appendListeners(EventType.MERGE, listener);
+
     }
 
     @Bean
@@ -133,10 +149,10 @@ public class AppConfiguration {
 
     @Bean
     @Lazy
-    public ReportMenuItem reportMenuItemMenuItem(JmsMessageSender sender,
-                                                 ReportRequestListener listener,
-                                                 StateService stateService) {
-        ReportMenuItem reportMenuItem = new ReportMenuItem(stateService, sender, listener);
+    public ReportMenuItem reportMenuItemMenuItem(StateService stateService,
+                                                 JmsMessageSender sender,
+                                                 ReportLogService reportLogService) {
+        ReportMenuItem reportMenuItem = new ReportMenuItem(sender, stateService, reportLogService);
         reportMenuItem.setName("reports");
         return reportMenuItem;
     }

@@ -27,6 +27,6 @@ public class UserServiceImpl extends GlobalServiceImpl<User> implements UserServ
 
     @Override
     public Integer getCurrentUserId() {
-        return CurrentUserInfo.get();
+        return CurrentUserInfo.get().getId();
     }
 }

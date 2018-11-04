@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity(name = "goods")
 @Table(name = "goods")
-public class Product implements IEntity {
+public class Product extends ModifiableEntity implements IEntity {
 
     public String getName() {
         return name;

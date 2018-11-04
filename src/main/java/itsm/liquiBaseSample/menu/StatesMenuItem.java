@@ -2,6 +2,7 @@ package itsm.liquiBaseSample.menu;
 
 import itsm.liquiBaseSample.domains.State;
 import itsm.liquiBaseSample.services.state.StateService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Scanner;
@@ -33,7 +34,8 @@ public class StatesMenuItem extends ConsoleMenuItem {
         }
     }
 
-    private String processAddRequest() {
+    @Transactional
+    protected String processAddRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
             State item = new State();
@@ -50,7 +52,8 @@ public class StatesMenuItem extends ConsoleMenuItem {
         }
     }
 
-    private String processEditRequest() {
+    @Transactional
+    protected String processEditRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.println("enter state id:");
@@ -75,7 +78,8 @@ public class StatesMenuItem extends ConsoleMenuItem {
         }
     }
 
-    private String processRemoveRequest() {
+    @Transactional
+    protected String processRemoveRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.println("enter state id:");
@@ -89,6 +93,7 @@ public class StatesMenuItem extends ConsoleMenuItem {
     }
 
     @Override
+    @Transactional
     public String getContent() {
         List<State> items = stateService.findAll();
         String content = getName();

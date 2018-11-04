@@ -3,6 +3,7 @@ package itsm.liquiBaseSample.menu;
 import itsm.liquiBaseSample.domains.Product;
 import itsm.liquiBaseSample.domains.State;
 import itsm.liquiBaseSample.services.product.ProductService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Scanner;
@@ -42,7 +43,8 @@ public class ProductsMenuItem extends ConsoleMenuItem {
         }
     }
 
-    private String processAddRequest() {
+    @Transactional
+    protected String processAddRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
             Product item = new Product();
@@ -60,7 +62,8 @@ public class ProductsMenuItem extends ConsoleMenuItem {
         }
     }
 
-    private String processEditRequest() {
+    @Transactional
+    protected String processEditRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.println("enter product id:");
@@ -90,7 +93,8 @@ public class ProductsMenuItem extends ConsoleMenuItem {
         }
     }
 
-    private String processRemoveRequest() {
+    @Transactional
+    protected String processRemoveRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.println("enter product id:");
@@ -104,6 +108,7 @@ public class ProductsMenuItem extends ConsoleMenuItem {
     }
 
     @Override
+    @Transactional
     public String getContent() {
         List<Product> items = productService.findAll();
         String content = getName();

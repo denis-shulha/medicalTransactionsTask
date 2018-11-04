@@ -1,7 +1,6 @@
 package itsm.liquiBaseSample.domains;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity(name = "transactions")
 @Table(name = "transactions")
@@ -33,12 +32,6 @@ public class Transaction extends ModifiableEntity implements IEntity {
 
     public Transaction() {
 
-    }
-
-    public Transaction(Patient patient, Product product, Date date) {
-        this.patient = patient;
-        this.product = product;
-        this.createdDate = date;
     }
 
     @Override

@@ -18,6 +18,7 @@ public class StateServiceImpl extends GlobalServiceImpl<State> implements StateS
 
     @Cached(cacheImpl = StateCacheImpl.class)
     @Override
+    @Transactional
     public State findById(Integer id) throws Exception {
         return super.findById(id);
     }

@@ -249,10 +249,23 @@
             <column name="action" type="varchar(1000)">
                 <constraints nullable="false"/>
             </column>
+
+            <column name="owner" type="int">
+                <constraints nullable="false"/>
+            </column>
+
         </createTable>
         <rollback>
             <dropTable tableName="audit"/>
         </rollback>
+    </changeSet>
+
+    <changeSet author="denis" id="addAuditUserForeignKeyConstraint">
+        <addForeignKeyConstraint baseColumnNames="owner"
+                                 baseTableName="audit"
+                                 constraintName="fk_audit_users"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
     </changeSet>
 
 </databaseChangeLog>

@@ -44,6 +44,7 @@ public class TransactionsMenuItem extends ConsoleMenuItem {
     }
 
     @Override
+    @Transactional
     public ConsoleMenuItem processRequest(String request) {
         switch (request) {
             case "1" : {
@@ -63,7 +64,8 @@ public class TransactionsMenuItem extends ConsoleMenuItem {
         }
     }
 
-    private String processAddRequest() {
+    @Transactional
+    protected String processAddRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
             Transaction item = new Transaction();
@@ -80,15 +82,17 @@ public class TransactionsMenuItem extends ConsoleMenuItem {
             return " error. Product not sold: " + ex.toString();
         }
     }
+
     @Transactional
     protected void processListByLoginRequest() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("enter user login: ");
         String login = scanner.nextLine();
-        List<Transaction> result = transactionService.findByUserLogin(login);
+        List<Transaction> result = transactionService.findByUserLogin(login);//transactionService.findByUserLogin(login);
         if(result.size() > 0) {
             System.out.println("transactions made by user " + login + ":");
-            drawTable(result);
+            String table = drawTable(result);
+            System.out.println(table);
         }
         else
             System.out.println("transactions not found");

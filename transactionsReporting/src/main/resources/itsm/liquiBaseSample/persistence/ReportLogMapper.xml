@@ -5,7 +5,7 @@
 
     <insert id="insert" parameterType='ReportLog' useGeneratedKeys='true'>
         insert into report_log (start_date, end_date, id_state, result, sender, created_date)
-        values (#{startDate}, #{endDate}, #{state.id}, #{result}, #{senderName}, now())
+        values (#{startDate}, #{endDate}, #{state.id}, #{result}, #{sender.id}, now())
     </insert>
 
 </mapper>

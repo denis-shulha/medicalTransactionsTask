@@ -1,13 +1,17 @@
 package itsm.liquiBaseSample.menu;
 
+import itsm.liquiBaseSample.domains.ReportLog;
 import itsm.liquiBaseSample.domains.State;
 import itsm.liquiBaseSample.jms.JmsMessageSender;
-import itsm.liquiBaseSample.jms.ReportRequestListener;
 import itsm.liquiBaseSample.jms.TransactionsReportRequest;
+import itsm.liquiBaseSample.security.CurrentUserInfo;
+import itsm.liquiBaseSample.services.reportLog.ReportLogService;
 import itsm.liquiBaseSample.services.state.StateService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 public class ReportMenuItem extends ConsoleMenuItem {
@@ -18,10 +22,12 @@ public class ReportMenuItem extends ConsoleMenuItem {
 
     private JmsMessageSender sender;
     private StateService stateService;
+    private ReportLogService reportLogService;
 
-    public ReportMenuItem(StateService stateService, JmsMessageSender sender, ReportRequestListener listener) {
+    public ReportMenuItem(JmsMessageSender sender, StateService stateService, ReportLogService reportLogService) {
         this.sender = sender;
         this.stateService = stateService;
+        this.reportLogService = reportLogService;
     }
 
     @Override
@@ -36,6 +42,10 @@ public class ReportMenuItem extends ConsoleMenuItem {
                 }
                 case "2": {
                     System.out.println(processPeriodicalByStateRequest());
+                    return this;
+                }
+                case "3" : {
+                    System.out.println("refreshing reports log...");
                     return this;
                 }
                 default: {
@@ -60,7 +70,12 @@ public class ReportMenuItem extends ConsoleMenuItem {
             String endDateString = scanner.nextLine();
             Date periodEndDate = fmt.parse(endDateString);
             //todo pass senderName to request
-            sender.sendRequest(new TransactionsReportRequest(periodStartDate, periodEndDate, null));
+            sender.sendRequest(
+                    new TransactionsReportRequest(
+                            periodStartDate, periodEndDate,
+                            null,CurrentUserInfo.get().getId()
+                    )
+            );
             return "report request has been sent";
         }
         catch (Exception ex) {
@@ -85,7 +100,10 @@ public class ReportMenuItem extends ConsoleMenuItem {
             if(state == null)
                 return "state does not exist";
             //todo pass senderName to request
-            sender.sendRequest(new TransactionsReportRequest(periodStartDate, periodEndDate, stateId));
+            sender.sendRequest(
+                    new TransactionsReportRequest(
+                            periodStartDate, periodEndDate,
+                            stateId, CurrentUserInfo.get().getId()));
             return "report request has been sent";
         }
         catch (Exception ex) {
@@ -94,8 +112,38 @@ public class ReportMenuItem extends ConsoleMenuItem {
     }
 
     @Override
+    @Transactional
+    public String getContent() {
+        List<ReportLog> items = reportLogService.findAll();
+        String content = getName();
+        String table = drawTable(items);
+        return content + "\n" + table +  "\n" + drawChildItems();
+    }
+
+
+    private String drawTable(List<ReportLog> items){
+        String delimiter = "+---------------+---------------+--------------------+--------------------+------------------------------+----------------------------------------------------------------------------------------------------+";
+        StringBuilder result = new StringBuilder(delimiter);
+        result.append("\n" + String.format("|%15s|%15s|%20s|%20s|%30s|%100s|","start date","end date","state", "sender", "created_date", "result"));
+        result.append("\n" + delimiter);
+        for (ReportLog item: items) {
+            result.append("\n" + stringifyItem(item));
+            result.append("\n" + delimiter);
+        }
+        return result.toString();
+    }
+
+    private String stringifyItem(ReportLog item) {
+        String sender = item.getSender() == null ? "" : item.getSender().getLogin();
+        String stateName = item.getState() == null ? "" : item.getState().getName();
+        return String.format("|%15s|%15s|%20s|%20s|%30s|%100s|",
+                item.getStartDate(), item.getEndDate(),stateName,
+                sender, item.getCreatedDate(), item.getResult());
+    }
+
+    @Override
     public String drawChildItems() {
-        return "[(1)generate periodical report] [(2)generate periodical report by state] [(0)quit]";
+        return "[(1)generate periodical report] [(2)generate periodical report by state] [(3)refresh log] [(0)quit]";
     }
 
 }
