@@ -1,9 +1,12 @@
 package itsm.liquiBaseSample.domains;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 
 @Entity(name = "users")
 @Table(name = "users")
+@DynamicUpdate
 public class User  implements IEntity {
 
     @Id
@@ -68,9 +71,13 @@ public class User  implements IEntity {
         return "User{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.id.equals(((User)obj).getId());
     }
 }

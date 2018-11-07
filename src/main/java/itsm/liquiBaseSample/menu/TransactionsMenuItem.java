@@ -46,25 +46,29 @@ public class TransactionsMenuItem extends ConsoleMenuItem {
     @Override
     @Transactional
     public ConsoleMenuItem processRequest(String request) {
+        ConsoleMenuItem result = this;
         switch (request) {
             case "1" : {
                 System.out.println(processAddRequest());
-                return this;
+                break;
             }
             case "2" : {
                 processListByLoginRequest();
-                return this;
+                break;
             }
-            case "0" :
-                return getParentMenu();
-                default: {
-                    System.out.println("Error: no such menu item");
-                    return this;
-                }
+            case "0" : {
+                result = getParentMenu();
+                break;
+            }
+            default: {
+                System.out.println("Error: no such menu item");
+                break;
+            }
         }
+        System.out.println(result != null ? result.getContent() : "");
+        return result;
     }
 
-    @Transactional
     protected String processAddRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
@@ -83,7 +87,6 @@ public class TransactionsMenuItem extends ConsoleMenuItem {
         }
     }
 
-    @Transactional
     protected void processListByLoginRequest() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("enter user login: ");

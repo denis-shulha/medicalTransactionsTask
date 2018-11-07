@@ -1,9 +1,12 @@
 package itsm.liquiBaseSample.domains;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 
 @Entity(name = "transactions")
 @Table(name = "transactions")
+@DynamicUpdate
 public class Transaction extends ModifiableEntity implements IEntity {
 
     public Integer getId() {

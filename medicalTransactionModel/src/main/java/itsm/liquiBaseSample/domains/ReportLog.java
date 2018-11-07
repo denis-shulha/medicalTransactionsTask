@@ -1,10 +1,13 @@
 package itsm.liquiBaseSample.domains;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "report_log")
 @Table(name = "report_log")
+@DynamicUpdate
 public class ReportLog implements IEntity {
 
     @Override

@@ -4,6 +4,7 @@ import itsm.liquiBaseSample.annotations.Audit;
 import itsm.liquiBaseSample.domains.Patient;
 import itsm.liquiBaseSample.services.global.GlobalServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -37,7 +38,6 @@ public class PatientServiceImpl extends GlobalServiceImpl<Patient> implements Pa
 
     @Override
     @Audit(action = "searching for patient")
-    @Transactional
     public Patient findById(Integer patientId) throws Exception {
         return super.findById(patientId);
     }

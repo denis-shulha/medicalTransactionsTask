@@ -14,7 +14,6 @@ public class MenuHandler {
             currentMenuItem = currentMenuItem.processRequest(choice);
             if (currentMenuItem == null)
                 break;
-            System.out.println(currentMenuItem.getContent());
             choice = choose.next();
         }
         choose.close();

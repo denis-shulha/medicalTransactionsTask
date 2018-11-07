@@ -1,10 +1,13 @@
 package itsm.liquiBaseSample.domains;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "states")
 @Table(name = "states")
+@DynamicUpdate
 public class State extends ModifiableEntity implements IEntity, Modifiable {
 
     @Id

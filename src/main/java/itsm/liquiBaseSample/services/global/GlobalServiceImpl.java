@@ -43,7 +43,6 @@ public abstract class GlobalServiceImpl<T> implements GlobalService<T> {
     }
 
     @Override
-    @Transactional
     public T findById(Integer itemId) throws Exception{
         return  (T)entityManager.find(getEntityClass(), itemId);
     }

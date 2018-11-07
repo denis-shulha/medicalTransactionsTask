@@ -4,6 +4,7 @@ import itsm.liquiBaseSample.auditors.GlobalAuditor;
 import itsm.liquiBaseSample.jms.JmsMessageSender;
 import itsm.liquiBaseSample.jms.ReportRequestListener;
 import itsm.liquiBaseSample.jpaEventListeners.JpaMergeOrPersistEntityListener;
+import itsm.liquiBaseSample.jpaEventListeners.JpaPreUpdateEntityListener;
 import itsm.liquiBaseSample.menu.*;
 import itsm.liquiBaseSample.services.audit.AuditService;
 import itsm.liquiBaseSample.services.patient.PatientService;
@@ -101,6 +102,7 @@ public class AppConfiguration {
         JpaMergeOrPersistEntityListener listener = new JpaMergeOrPersistEntityListener();
         eventListenerRegistry.appendListeners(EventType.PERSIST, listener);
         eventListenerRegistry.appendListeners(EventType.MERGE, listener);
+        eventListenerRegistry.appendListeners(EventType.PRE_UPDATE, new JpaPreUpdateEntityListener());
 
     }
 

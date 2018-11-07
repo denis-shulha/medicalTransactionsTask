@@ -13,29 +13,35 @@ public class PatientsMenuItem extends ConsoleMenuItem {
     private PatientService patientService;
 
     @Override
+    @Transactional
     public ConsoleMenuItem processRequest(String request) {
+        ConsoleMenuItem result = this;
         switch (request) {
             case "1" : {
                 System.out.println(processAddRequest());
-                return this;
+                break;
             }
             case "2" :{
                 System.out.println(processEditRequest());
-                return this;
+                break;
             }
             case "3" :{
                 System.out.println(processRemoveRequest());
-                return this;
+                break;
             }
-            case "0" : return this.getParentMenu();
+            case "0" : {
+                result = this.getParentMenu();
+                break;
+            }
             default : {
                 System.out.println("Error: no such menu item");
-                return this;
+                break;
             }
         }
+        System.out.println(result != null ? result.getContent() : "");
+        return result;
     }
 
-    @Transactional
     protected String processAddRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
@@ -56,7 +62,6 @@ public class PatientsMenuItem extends ConsoleMenuItem {
         }
     }
 
-    @Transactional
     protected String processEditRequest() {
         try {
             Scanner scanner = new Scanner(System.in);
@@ -89,7 +94,6 @@ public class PatientsMenuItem extends ConsoleMenuItem {
         }
     }
 
-    @Transactional
     protected String processRemoveRequest() {
         try {
             Scanner scanner = new Scanner(System.in);

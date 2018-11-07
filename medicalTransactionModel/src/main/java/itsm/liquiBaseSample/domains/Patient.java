@@ -1,10 +1,13 @@
 package itsm.liquiBaseSample.domains;
 
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 
 @Entity(name = "patients")
 @Table(name = "patients")
+@DynamicUpdate
 public class Patient extends ModifiableEntity implements IEntity {
 
     public Integer getId() {
@@ -70,7 +73,7 @@ public class Patient extends ModifiableEntity implements IEntity {
     @Column(name = "phone")
     private String phone;
 
-    @ManyToOne(targetEntity = State.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = State.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_state")
     private State state;
 }

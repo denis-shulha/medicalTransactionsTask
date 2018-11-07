@@ -1,9 +1,12 @@
 package itsm.liquiBaseSample.domains;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 
 @Entity(name = "goods")
 @Table(name = "goods")
+@DynamicUpdate
 public class Product extends ModifiableEntity implements IEntity {
 
     public String getName() {

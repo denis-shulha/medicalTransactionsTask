@@ -31,31 +31,38 @@ public class ReportMenuItem extends ConsoleMenuItem {
     }
 
     @Override
+    @Transactional
     public ConsoleMenuItem processRequest(String request) {
+        ConsoleMenuItem result = this;
         try {
             switch (request) {
-                case "0":
-                    return getParentMenu();
+                case "0": {
+                    result = getParentMenu();
+                    break;
+                }
                 case "1": {
                     System.out.println(processPeriodicalRequest());
-                    return this;
+                    break;
                 }
                 case "2": {
                     System.out.println(processPeriodicalByStateRequest());
-                    return this;
+                    break;
                 }
                 case "3" : {
                     System.out.println("refreshing reports log...");
-                    return this;
+                    break;
                 }
                 default: {
                     System.out.println("Error: no such menu item");
-                    return this;
+                    break;
                 }
             }
+            System.out.println(result != null ? result.getContent() : "");
+            return result;
         }
         catch (Exception ex) {
             ex.printStackTrace();
+            System.out.println(getContent());
             return this;
         }
     }

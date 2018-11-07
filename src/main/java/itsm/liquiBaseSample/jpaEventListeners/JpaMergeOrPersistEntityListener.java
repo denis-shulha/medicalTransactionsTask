@@ -4,16 +4,19 @@ import itsm.liquiBaseSample.domains.Modifiable;
 import itsm.liquiBaseSample.security.CurrentUserInfo;
 import org.hibernate.HibernateException;
 import org.hibernate.event.spi.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 public class JpaMergeOrPersistEntityListener implements PersistEventListener, MergeEventListener {
 
     @Override
+    @Transactional
     public void onMerge(MergeEvent event) throws HibernateException {
-        if(event.getEntity() instanceof Modifiable) {
-            Modifiable entity = (Modifiable) event.getResult();
+        Modifiable entity = (Modifiable) event.getResult();
+        if(entity instanceof Modifiable) {
             entity.setModifiedBy(CurrentUserInfo.get());
+            entity.getCreatedBy();
         }
     }
 
@@ -22,6 +25,7 @@ public class JpaMergeOrPersistEntityListener implements PersistEventListener, Me
     }
 
     @Override
+    @Transactional
     public void onPersist(PersistEvent event) throws HibernateException {
         if(event.getObject() instanceof Modifiable) {
             Modifiable entity =(Modifiable) event.getObject();
