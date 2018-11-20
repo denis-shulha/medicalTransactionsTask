@@ -29,7 +29,7 @@ dependencies {
 
     jar {
         manifest {
-            attributes 'Main-Class': 'itsm.liquiBaseSample.runner.ReportRunnerMain'
+            attributes 'Main-Class': 'itsm.liquiBaseSample.webMvc.runner.ReportRunnerMain'
         }
         from {
             configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }

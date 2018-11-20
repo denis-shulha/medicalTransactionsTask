@@ -11,4 +11,8 @@ repositories {
 
 dependencies {
     compile group : 'org.hibernate', name: 'hibernate-core', version: '5.3.7.Final'
+    
+    compile 'mysql:mysql-connector-java:6.0.6'
+
+    compile 'org.liquibase:liquibase-core:3.4.1'
 }
