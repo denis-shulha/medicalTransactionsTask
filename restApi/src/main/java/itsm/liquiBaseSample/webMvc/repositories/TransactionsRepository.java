@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public interface TransactionsRepository extends JpaRepository<Transaction, Integer> {
 
     List<Transaction> findAllByCreatedByLogin(String login);

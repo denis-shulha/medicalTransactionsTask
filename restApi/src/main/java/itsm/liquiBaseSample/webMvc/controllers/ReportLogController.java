@@ -21,7 +21,7 @@ public class ReportLogController extends CustomEntityController<ReportLog, Repor
     }
 
     @RequestMapping(value = "/getByStateId", method = RequestMethod.GET)
-    public List<ReportLogDto> getPatientsByState(@RequestParam("stateId") Integer stateId) {
+    public List<ReportLogDto> getReportsByState(@RequestParam("stateId") Integer stateId) {
         return ((ReportLogCrudService) service).findByStateId(stateId);
     }
 

@@ -2,6 +2,10 @@
 /medicalTransactionModel/out
 /transactionsReporting/build
 /transactionsReporting/out
+/restApi/build
+/restApi/out
+/menu/build
+/menu/out
 /build
 /out
 /reports

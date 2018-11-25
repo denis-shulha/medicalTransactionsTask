@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
 @EnableJpaRepositories(basePackages = "itsm.liquiBaseSample.webMvc.repositories")
-@ComponentScan(basePackages = "itsm.liquiBaseSample")
+@ComponentScan("itsm.liquiBaseSample")
 @SpringBootApplication
 @EntityScan("itsm.liquiBaseSample.domains")
 public class WebMain {

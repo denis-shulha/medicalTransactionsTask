@@ -24,7 +24,7 @@ public class ReportLogCrudServiceImpl
 
     @Override
     public List<ReportLogDto> findByOwnerLogin(String login) {
-        return ((ReportsRepository)reposotory).findAllBySenderName(login)
+        return ((ReportsRepository)reposotory).findAllBySenderLogin(login)
                 .stream()
                 .map(converter::convertToDto)
                 .collect(Collectors.toList());

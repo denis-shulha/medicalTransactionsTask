@@ -1,0 +1,15 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="itsm.liquiBaseSample.reporting.persistence.StateMapper">
+
+    <resultMap id="stateRM" type="itsm.liquiBaseSample.domains.State">
+        <id property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="findById" resultMap="stateRM">
+        select * from states where id=#{id}
+    </select>
+</mapper>

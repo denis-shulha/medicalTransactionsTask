@@ -66,6 +66,15 @@ public class User  implements IEntity {
         this.name = name;
     }
 
+    public User() {
+    }
+
+    public User(String login, String email, String name) {
+        this.login = login;
+        this.email = email;
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "User{" +

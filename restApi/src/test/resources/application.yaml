@@ -1,0 +1,14 @@
+spring:
+  liquibase:
+    url: jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1
+    user: root
+    password: dep16215675
+    change-log: classpath:changeSets/databaseChangeLog.xml
+  profiles:
+    active: test
+  datasource:
+    platform: mysql
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MYSQL
+    username: root
+    password: dep16215675

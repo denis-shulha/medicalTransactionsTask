@@ -6,8 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public interface ReportsRepository extends JpaRepository<ReportLog, Integer> {
     List<ReportLog> findAllByStateId(Integer stateId);
-    List<ReportLog> findAllBySenderName(String senderName);
+    List<ReportLog> findAllBySenderLogin(String senderName);
 }
