@@ -26,6 +26,8 @@ dependencies {
     compile project(":jmsUtils")
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+    compile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.3'
+    compile group: 'io.rest-assured', name: 'json-schema-validator', version: '3.0.3'
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-test'

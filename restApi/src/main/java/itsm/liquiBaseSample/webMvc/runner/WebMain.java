@@ -7,8 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-@EnableWebMvc
 @EnableJpaRepositories(basePackages = "itsm.liquiBaseSample.webMvc.repositories")
+@EnableWebMvc
 @ComponentScan("itsm.liquiBaseSample")
 @SpringBootApplication
 @EntityScan("itsm.liquiBaseSample.domains")

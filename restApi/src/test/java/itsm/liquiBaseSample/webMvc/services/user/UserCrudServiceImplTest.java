@@ -33,6 +33,7 @@ public class UserCrudServiceImplTest {
     @Before
     public void initUsersTestData() {
         userForTest = new User("user12", "email@com", "Jacob");
+        userForTest.setPassword("somePassword");
         entityManager.persist(userForTest);
         entityManager.flush();
     }
@@ -45,6 +46,7 @@ public class UserCrudServiceImplTest {
     @Test
     public void saveUserTest() {
         User user = new User("user22", "email22.com", "Kenny");
+        user.setPassword("Kenny_123");
         usersRepository.save(user);
     }
 

@@ -7,10 +7,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <preConditions>
-        <runningAs username="root"/>
-    </preConditions>
-
     <include file="v1/initialChangeSet.xml" relativeToChangelogFile="true"/>
     <include file="v1/addingReportLogTable.xml" relativeToChangelogFile="true"/>
     <include file="v1/addingDefaultUsersChangeSet.xml" relativeToChangelogFile="true"/>

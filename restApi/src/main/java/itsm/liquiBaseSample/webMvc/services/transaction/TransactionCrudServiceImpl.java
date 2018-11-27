@@ -2,6 +2,7 @@ package itsm.liquiBaseSample.webMvc.services.transaction;
 
 import itsm.liquiBaseSample.domains.Transaction;
 import itsm.liquiBaseSample.webMvc.converter.CustomDtoConverter;
+import itsm.liquiBaseSample.webMvc.converter.TransactionConverter;
 import itsm.liquiBaseSample.webMvc.dto.TransactionDto;
 import itsm.liquiBaseSample.webMvc.repositories.TransactionsRepository;
 import itsm.liquiBaseSample.webMvc.services.CustomEntityCrudServiceImpl;

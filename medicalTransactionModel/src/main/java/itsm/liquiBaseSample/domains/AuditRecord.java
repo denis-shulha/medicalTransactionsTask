@@ -3,7 +3,7 @@ package itsm.liquiBaseSample.domains;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@Entity(name = "audit")
 @Table(name = "audit")
 public class AuditRecord implements IEntity {
 

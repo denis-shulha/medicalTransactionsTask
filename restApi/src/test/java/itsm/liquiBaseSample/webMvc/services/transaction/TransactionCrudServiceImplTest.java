@@ -47,7 +47,7 @@ public class TransactionCrudServiceImplTest {
         patientForTest = new Patient("Mark", "55433423", stateForTest);
         entityManager.persist(patientForTest);
 
-        ownerForTest = new User("user23", "user23Email.com", "Peter");
+        ownerForTest = entityManager.find(User.class, 1);
         entityManager.persist(ownerForTest);
 
         transactionForTest = new Transaction();
